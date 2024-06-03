@@ -1,0 +1,77 @@
+{% extends 'accounts/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card w-50 h-75">
+            <div class="card-body">
+                <h5 class="card-title text-center mt-3">Registro Usuarios Fenix Store</h5>
+                <div class="d-flex justify-content-center mt-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="{{ form.username.id_for_label }}"
+                                   class="form-label">{{ form.username.label_tag }}</label>
+                            {{ form.username|attr:"class:form-control" }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.email.id_for_label }}"
+                                   class="form-label">{{ form.email.label_tag }}</label>
+                            {{ form.email|attr:"class:form-control" }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.password1.id_for_label }}"
+                                   class="form-label">{{ form.password1.label_tag }}</label>
+                            {{ form.password1|attr:"class:form-control"|attr:"type:password" }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.password2.id_for_label }}"
+                                   class="form-label">{{ form.password2.label_tag }}</label>
+                            {{ form.password2|attr:"class:form-control"|attr:"type:password" }}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-secondary mt-4">Registrarse</button>
+                        </div>
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="modal" tabindex="-1" id="messageModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Fenix Store</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'accounts:login' %}" class="btn btn-secondary" id="loginLink"
+                               data-bs-dismiss="modal">Cerrar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+                    messageModal.show();
+
+
+                    var loginLink = document.getElementById('loginLink');
+                    loginLink.addEventListener('click', function (event) {
+                        event.preventDefault(); // Evita que el enlace se abra directamente
+                        window.location.href = loginLink.getAttribute('href'); // Redirige al enlace de inicio de sesión
+                    });
+                });
+            </script>
+        {% endif %}
+    </div>
+{% endblock %}

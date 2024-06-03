@@ -1,0 +1,38 @@
+{% extends 'accounts/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card w-25 h-50">
+            <div class="card-body">
+                <h5 class="card-title text-center mt-2">Login Fenix Store</h5>
+                <div class="d-flex justify-content-center mt-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}"
+                                   class="form-label">{{ form.username.label_tag }}</label>
+                            {{ form.username|attr:"class:form-control" }}
+                            {% if form.username.errors %}
+                                <div class="text-danger">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.password.id_for_label }}"
+                                   class="form-label">{{ form.password.label_tag }}</label>
+                            {{ form.password|attr:"class:form-control"|attr:"type:password" }}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-secondary btn-sm mt-3">Iniciar sesión</button>
+                        </div>
+                    </form>
+                </div>
+                <p class="text-center mt-5">No estas registado, <a href="{% url 'accounts:register' %}">Registrate
+                    aca</a></p>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

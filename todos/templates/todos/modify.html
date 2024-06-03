@@ -1,0 +1,47 @@
+{% extends 'todos/base.html' %}
+{% load widget_tweaks %}
+{% block logout %}
+    <a href="{% url 'accounts:logout' %}" class="ms-5 btn btn-outline-success btn-sm">Logout</a>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="container w-50 mt-5 bg-light rounded-4">
+            <div class="row d-flex justify-content-between p-3">
+                <div class="col-2">
+                    <a class="btn btn-secondary btn-block btn-sm"
+                       href="{% url 'todos:view_todo' todo_id %}">Volver</a>
+                </div>
+                <div class="col-6 text-end">
+                    <button type="submit" class="btn btn-secondary btn-sm">Actualizar tarea</button>
+                </div>
+            </div>
+            <div class="p-3">
+                <h3 class="text-center">Actualizar de tarea</h3>
+                <div class="input-group mb-3 mt-3">
+                    <span class="input-group-text w-25" id="inputGroup-sizing-default">Título</span>
+                    {{ todos_form.title|attr:"class:form-control"|attr:"aria-label:Sizing example input"|attr:"aria-describedby:inputGroup-sizing-default" }}
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text w-25">Descripción</span>
+                    {{ todos_form.description|attr:"class:form-control"|attr:"aria-label:With textarea"|attr:"rows:3" }}
+                </div>
+                <div class="input-group mb-3 mt-3">
+                    <label class="input-group-text w-25" for="inputGroupSelect01">Estatus</label>
+                    {{ todos_form.status|attr:"class:form-select" }}
+                </div>
+                <div class="input-group mb-3 mt-3">
+                    <label class="input-group-text w-25" for="inputGroupSelect01">prioridad</label>
+                    {{ todos_form.priority|attr:"class:form-select" }}
+                </div>
+                <div class="input-group mb-3 mt-3">
+                    <span class="input-group-text w-25" id="inputGroup-sizing-default">Vencimiento</span>
+                    {{ todos_form.due_date|attr:"class:form-control"|attr:"aria-label:Sizing example input"|attr:"aria-describedby:inputGroup-sizing-default" }}
+                </div>
+                <div class="input-group mb-3 mt-3 p-2 border border-secondary-subtle rounded-2">
+                    {{ todos_form.labels|attr:"class:d-inline-flex ms-2" }}
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

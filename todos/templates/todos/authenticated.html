@@ -1,0 +1,97 @@
+{% extends 'todos/base.html' %}
+{% load widget_tweaks %}
+
+{% block logout %}
+    <a href="{% url 'accounts:logout' %}" class="ms-5 btn btn-outline-success btn-sm">Logout</a>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="text-center text-bg-light w-50 mx-auto rounded-3 m-4 p-1">Listado de Tareas</h4>
+        {% if messages %}
+            <div class="d-flex justify-content-center">
+                {% for message in messages %}
+                    <div class="alert alert-success w-50 text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="get" class="d-flex justify-content-around mb-4">
+            <div class="col-3 text-end me-2">
+                {{ todos_form.status|attr:"class:btn btn-secondary dropdown-toggle" }}
+            </div>
+            <div class="col-3 text-start">
+                {{ todos_form.labels|attr:"class:btn btn-secondary dropdown-toggle" }}
+            </div>
+            <div class="col-6 text-center">
+                <a href="{% url 'todos:create_todo' %}" class="btn btn-secondary">Añadir Tarea</a>
+            </div>
+        </form>
+
+        {% if todos %}
+            <table class="table table-striped w-75 mx-auto">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tarea</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha Vencimiento</th>
+                    <th scope="col">Etiquetas</th>
+                    <th scope="col">Prioridad</th>
+                    <th scope="col">Detalle</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for todo in todos %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ todo.title }}</td>
+                        <td>{{ todo.status }}</td>
+                        <td>{{ todo.due_date }}</td>
+                        <td>
+                            {% for label in todo.labels.all %}
+                                {{ label }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        {% if todo.priority.priority == 'alta' %}
+                            <td class="text-center"><span
+                                    class="badge rounded-pill text-bg-danger">{{ todo.priority.priority }}</span>
+                            </td>
+                        {% endif %}
+                        {% if todo.priority.priority == 'media' %}
+                            <td class="text-center"><span
+                                    class="badge rounded-pill text-bg-warning">{{ todo.priority.priority }}</span>
+                            </td>
+                        {% endif %}
+                        {% if todo.priority.priority == 'baja' %}
+                            <td class="text-center"><span
+                                    class="badge rounded-pill text-bg-secondary">{{ todo.priority.priority }}</span>
+                            </td>
+                        {% endif %}
+                        <td><a class="btn btn-secondary" href="{% url 'todos:view_todo' todo.id %}">Ver</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">No se encontraron tareas que coincidan con los filtros.</p>
+        {% endif %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusDropdown = document.getElementById('id_status');
+            const labelsDropdown = document.getElementById('id_labels');
+
+            statusDropdown.addEventListener('change', function () {
+                this.form.submit();
+            });
+
+            labelsDropdown.addEventListener('change', function () {
+                this.form.submit();
+            });
+        });
+    </script>
+{% endblock %}
+

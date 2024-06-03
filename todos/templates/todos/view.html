@@ -1,0 +1,70 @@
+{% extends 'todos/base.html' %}
+{% load widget_tweaks %}
+{% block logout %}
+    <a href="{% url 'accounts:logout' %}" class="ms-5 btn btn-outline-success btn-sm">Logout</a>
+{% endblock %}
+{% block content %}
+    <div class="container w-50 mt-5 bg-light rounded-4">
+        <div class="row d-flex justify-content-between p-3">
+            <div class="col-2">
+                <a class="btn btn-secondary btn-block btn-sm" href="{% url 'todos:authenticated' %}">Volver</a>
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-secondary btn-sm" href="{% url 'todos:modify_todo' todo_detail.id %}">Editar</a>
+                <a class="btn btn-secondary btn-sm" href="{% url 'todos:delete_todo' todo_detail.id %}">Eliminar</a>
+                <a class="btn btn-secondary btn-sm" href="{% url 'todos:complete_todo' todo_detail.id %}">Completar</a>
+            </div>
+        </div>
+        <div class="p-3">
+            <h3 class="text-center">Detalle de tarea</h3>
+            <div class="input-group mb-3 mt-3">
+                <span class="input-group-text w-25" id="inputGroup-sizing-default-1">Título</span>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" value="{{ todo_detail.title }}" disabled>
+            </div>
+            <div class="input-group">
+                <span class="input-group-text w-25">Descripción</span>
+                <textarea class="form-control" aria-label="With textarea"
+                          disabled>{{ todo_detail.description }}</textarea>
+            </div>
+            <div class="input-group mb-3 mt-3">
+                <span class="input-group-text w-25" id="inputGroup-sizing-default-2">Estatus</span>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" value="{{ todo_detail.status }}" disabled>
+            </div>
+            <div class="input-group mb-3 mt-3">
+                <span class="input-group-text w-25" id="inputGroup-sizing-default-3">Vencimiento</span>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" value="{{ todo_detail.due_date }}" disabled>
+            </div>
+            <div class="input-group pb-4 mt-3">
+                <span class="input-group-text w-25" id="inputGroup-sizing-default-4">Etiquetas</span>
+                {% for label in todo_detail.labels.all %}
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default" value="{{ label }}" disabled>
+                {% endfor %}
+            </div>
+            <div class="input-group mb-3 mt-3">
+                <span class="input-group-text w-25" id="inputGroup-sizing-default-2">Prioridad</span>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" value="{{ todo_detail.priority }}" disabled>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <span class="input-group-text w-25">Observaciones</span>
+                    {{ todos_observations.observations|attr:"class:form-control"|attr:"rows:5" }}
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-secondary btn-sm mt-2 mb-2" type="submit">Guardar Observación</button>
+                </div>
+            </form>
+            <div class="input-group">
+                <span class="input-group-text w-30">Historial Observaciones</span>
+                <textarea class="form-control" rows="5" aria-label="With textarea"
+                          disabled>{{ todo_detail.observations }}</textarea>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

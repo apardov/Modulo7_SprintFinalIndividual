@@ -1,0 +1,13 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card w-50 mb-3">
+            <div class="card-body">
+                <h5 class="card-title text-center mb-3">Bienvenidos a Fenix Store</h5>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-sm ">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
